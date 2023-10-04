@@ -1,11 +1,11 @@
 #ifndef SIMPLECACHE_H
 #define SIMPLECACHE_H
 
+#include "Cache.h"
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdint.h>
-#include "Cache.h"
 
 void resetTime();
 
@@ -20,14 +20,14 @@ void initCache();
 void accessL1(uint32_t, uint8_t *, uint32_t);
 
 typedef struct CacheLine {
-  uint8_t Valid;
-  uint8_t Dirty;
-  uint32_t Tag;
+    uint8_t Valid;
+    uint8_t Dirty;
+    uint32_t Tag;
 } CacheLine;
 
 typedef struct Cache {
-  uint32_t init;
-  CacheLine line;
+    uint32_t init;
+    CacheLine line[L1_BLOCK_COUNT];
 } Cache;
 
 /*********************** Interfaces *************************/
