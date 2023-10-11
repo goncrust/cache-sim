@@ -72,21 +72,20 @@ void accessL1(uint32_t address, uint8_t *data, uint32_t mode) {
             /* temp_address is DRAM address for the dirty tag */
             temp_address = index << 6;
             temp_address |= Line->Tag << 14;
-            accessDRAM(temp_address, &(L1Cache[0]) + cache_block_address,
-                       MODE_WRITE);
+            accessDRAM(temp_address, L1Cache + cache_block_address, MODE_WRITE);
         }
 
-        memcpy(&(L1Cache[0]) + (index * BLOCK_SIZE), temp_block, BLOCK_SIZE);
+        memcpy(L1Cache + cache_block_address, temp_block, BLOCK_SIZE);
         Line->Valid = 1;
         Line->Tag = tag;
         Line->Dirty = 0;
     }
 
     if (mode == MODE_READ) { // read data from cache line
-        memcpy(data, &(L1Cache[0]) + cache_address, WORD_SIZE);
+        memcpy(data, L1Cache + cache_address, WORD_SIZE);
         time += L1_READ_TIME;
     } else if (mode == MODE_WRITE) { // write data from cache line
-        memcpy(&(L1Cache[0]) + cache_address, data, WORD_SIZE);
+        memcpy(L1Cache + cache_address, data, WORD_SIZE);
         time += L1_WRITE_TIME;
         Line->Dirty = 1;
     }
